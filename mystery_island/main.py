@@ -6,6 +6,15 @@ location = "Beach"
 
 inventory = []
 
+game_over = False
+
+allowed_routes = {
+    "Beach": "Jungle",
+    "Jungle": "Cave",
+    "Cave": "Old Bridge",
+    "Old Bridge": "Lighthouse"
+}
+
 
 print("==============================")
 print("     MYSTERY ISLAND     ")
@@ -19,7 +28,7 @@ print(f"Energy: {energy}")
 
 choice = ""
 
-while choice != "3":
+while choice != "3" and not game_over:
     print("\nWhat would you like to do?")
     print("1. Explore")
     print("2. Check inventory")
@@ -43,33 +52,36 @@ while choice != "3":
     elif choice == "4":
         destination = input("Where would you like to go? ")
 
-        if destination == "Jungle":
-            location = "Jungle"
-            print("You have travelled to the Jungle!")
-            print(f"Current Location: {location}")
+        next_location = allowed_routes.get(location)
 
-        elif destination == "Cave":
-            location = "Cave"
-            print("You have travelled to the Cave")
-            print(f"Current Location: {location}")
+        if destination == "Lighthouse":
+            print("You have reached the final destination!")
+            
 
-        elif destination == "Old Bridge":
-            location = "Old Bridge"
-            print("You have travelled to the Old Bridge")
-            print(f"Current Location: {location}")
+        if destination != next_location:
+            print(f"Wrong route! From {location}, you must travel to {next_location}.")
 
-        elif destination == "Lighthouse":
-            if "Lanter" in inventory:
-                location = "Lighthouse"
-                print("You have travelled to the Lighthouse")
-                print(f"Current Location: {location}")
-            else:
-                print("You need a Lanter to enter the Lighouse")
-                
+        elif destination == "Old Bridge" and "Rope" not in inventory:
+            print("You need a Rope to cross the bridge!")
 
+        elif destination == "Lighthouse" and "Lantern" not in inventory:
+            print("You need a Lantern to enter the Lighthouse!")
 
         else:
-            print("That location is not available.")
+            location = destination
+            print(f"You have travelled to the {location}!")
+            print(f"Current Location: {location}")
+
+            energy -= 1
+            print(f"Energy: {energy}")
+
+            if energy <= 0:
+                print("GAME OVER! You run out of energy.")
+                game_over = True   
+    else:
+        if choice != "3":
+            print("Invalid choice! Please select 1, 2, 3, 4.")
+
 
 
     

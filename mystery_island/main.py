@@ -1,12 +1,6 @@
-player_name = input("What is your name")
-
-energy = 5
-
-location = "Beach"
-
-inventory = []
-
-game_over = False
+# =====================================
+# MYSTERY ISLAND: THE LOST LIGHTHOUSE
+# =====================================
 
 allowed_routes = {
     "Beach": "Jungle",
@@ -15,82 +9,234 @@ allowed_routes = {
     "Old Bridge": "Lighthouse"
 }
 
+play_again = "1"
 
-print("==============================")
-print("     MYSTERY ISLAND     ")
-print("    THE LOST LIGHTHOUSE")
-print("==============================")
+while play_again == "1":
 
+    # RESET GAME VARIABLES
+    player_name = input("What is your name? ")
 
-print(f"Welcome, {player_name}!")
-print(f"Current Location: {location}")
-print(f"Energy: {energy}")
+    energy = 5
+    location = "Beach"
+    inventory = []
+    game_over = False
+    choice = ""
 
-choice = ""
+    # GAME INTRODUCTION
+    print("==============================")
+    print("     MYSTERY ISLAND")
+    print("    THE LOST LIGHTHOUSE")
+    print("==============================")
 
-while choice != "3" and not game_over:
-    print("\nWhat would you like to do?")
-    print("1. Explore")
-    print("2. Check inventory")
-    print("3. Quit")
-    print("4. Travel to another location")
+    print("\nGAME INSTRUCTIONS")
+    print("1. Explore the island to collect useful items.")
+    print("2. Collect a Rope to cross the Old Bridge.")
+    print("3. Collect a Lantern to enter the Lighthouse.")
+    print("4. Each successful movement costs 1 energy.")
+    print("5. Your decisions can increase or reduce your energy.")
+    print("6. Reach the Lighthouse before your energy runs out.")
 
-    choice = input("Choose an option:")
+    print(f"\nWelcome, {player_name}!")
+    print(f"Current Location: {location}")
+    print(f"Energy: {energy}")
 
-    if choice == "1":
-        if "Rope" not in inventory:
-            inventory.append("Rope")
-            print("You found a Rope!")
+    # MAIN GAME LOOP
+    while choice != "3" and not game_over:
 
-        elif "Lantern" not in inventory:
-            inventory.append("Lantern")
-            print("You found a Lantern!")
+        print("\nWhat would you like to do?")
+        print("1. Explore")
+        print("2. Check inventory")
+        print("3. Quit")
+        print("4. Travel to another location")
 
-    elif choice == "2":
-        print("Your inventory:", inventory)
+        choice = input("Choose an option: ")
 
-    elif choice == "4":
-        destination = input("Where would you like to go? ")
+        # EXPLORE
+        if choice == "1":
 
-        next_location = allowed_routes.get(location)
+            if "Rope" not in inventory:
+                inventory.append("Rope")
+                print("You found a Rope!")
 
-        if destination == "Lighthouse":
-            print("You have reached the final destination!")
-            
+            elif "Lantern" not in inventory:
+                inventory.append("Lantern")
+                print("You found a Lantern!")
 
-        if destination != next_location:
-            print(f"Wrong route! From {location}, you must travel to {next_location}.")
+            else:
+                print("You have collected all available items!")
 
-        elif destination == "Old Bridge" and "Rope" not in inventory:
-            print("You need a Rope to cross the bridge!")
+        # CHECK INVENTORY
+        elif choice == "2":
 
-        elif destination == "Lighthouse" and "Lantern" not in inventory:
-            print("You need a Lantern to enter the Lighthouse!")
+            print("Your inventory:", inventory)
 
+        # QUIT
+        elif choice == "3":
+
+            print("You have decided to quit the adventure.")
+
+        # TRAVEL
+        elif choice == "4":
+
+            if location == "Lighthouse":
+
+                print("You have already reached the final destination!")
+
+            else:
+
+                destination = input("Where would you like to go? ")
+
+                next_location = allowed_routes.get(location)
+
+                # CHECK CORRECT ROUTE
+                if destination != next_location:
+
+                    print(
+                        f"Wrong route! From {location}, "
+                        f"you must travel to {next_location}."
+                    )
+
+                # CHECK ROPE REQUIREMENT
+                elif destination == "Old Bridge" and "Rope" not in inventory:
+
+                    print("You need a Rope to cross the bridge!")
+
+                # CHECK LANTERN REQUIREMENT
+                elif destination == "Lighthouse" and "Lantern" not in inventory:
+
+                    print("You need a Lantern to enter the Lighthouse!")
+
+                # SUCCESSFUL TRAVEL
+                else:
+
+                    location = destination
+
+                    print(f"\nYou have travelled to the {location}!")
+                    print(f"Current Location: {location}")
+
+                    # REDUCE ENERGY FOR TRAVELLING
+                    energy -= 1
+
+                    # JUNGLE DECISION
+                    if location == "Jungle":
+
+                        print("\nYou have reached the Jungle!")
+                        print("1. Take the safe path")
+                        print("2. Take the dangerous shortcut")
+
+                        jungle_choice = input("Choose your path: ")
+
+                        if jungle_choice == "1":
+
+                            print("You took the safe path. No extra energy lost.")
+
+                        elif jungle_choice == "2":
+
+                            energy -= 2
+                            print("You took the dangerous shortcut and lost 2 energy!")
+
+                        else:
+
+                            print("Invalid choice. You lost 1 extra energy.")
+                            energy -= 1
+
+                    # CAVE DECISION
+                    elif location == "Cave":
+
+                        print("\nYou have reached the Cave!")
+                        print("1. Search for an energy supply")
+                        print("2. Ignore the supply and continue")
+
+                        cave_choice = input("Choose an option: ")
+
+                        if cave_choice == "1":
+
+                            energy += 2
+                            print("You found an energy supply! You gained 2 energy.")
+
+                        elif cave_choice == "2":
+
+                            print("You ignored the energy supply.")
+
+                        else:
+
+                            print("Invalid choice. You lost 1 extra energy.")
+                            energy -= 1
+
+                    # OLD BRIDGE DECISION
+                    elif location == "Old Bridge":
+
+                        print("\nYou have reached the Old Bridge!")
+                        print("1. Cross the bridge carefully")
+                        print("2. Return to the Cave and prepare")
+
+                        bridge_choice = input("Choose an option: ")
+
+                        if bridge_choice == "1":
+
+                            energy -= 1
+                            print("You crossed the bridge carefully.")
+                            print("You lost 1 extra energy.")
+
+                        elif bridge_choice == "2":
+
+                            location = "Cave"
+                            energy += 1
+
+                            print("You decided to return to the Cave.")
+                            print("Your energy has been restored for this journey.")
+
+                        else:
+
+                            print("Invalid choice. You lost 1 extra energy.")
+                            energy -= 1
+
+                    # DISPLAY ENERGY
+                    print(f"\nEnergy: {energy}")
+
+                    # CHECK GAME OVER
+                    if energy <= 0:
+
+                        print("\nGAME OVER!")
+                        print("You have run out of energy.")
+                        game_over = True
+
+                    # CHECK WINNING CONDITION
+                    elif location == "Lighthouse" and "Lantern" in inventory:
+
+                        print("\n==============================")
+                        print("     CONGRATULATIONS!")
+                        print("YOU HAVE FOUND THE LOST LIGHTHOUSE!")
+                        print("           YOU WIN!")
+                        print("==============================")
+
+                        game_over = True
+
+        # INVALID MENU CHOICE
         else:
-            location = destination
-            print(f"You have travelled to the {location}!")
-            print(f"Current Location: {location}")
 
-            energy -= 1
-            print(f"Energy: {energy}")
+            print("Invalid choice! Please select 1, 2, 3, or 4.")
 
+    # END OF GAME
+    print("\nThanks for playing Mystery Island!")
 
-            if energy <= 0:
-                print("GAME OVER! You run out of energy.")
-                game_over = True  
+    # REPLAY SYSTEM
+    play_again = input(
+        "Would you like to play again? (1 = Yes, 2 = No): "
+    )
 
-            elif location == "Lighthouse" and "Lantern" in inventory:
-                print("CONGRATULATIONS! YOU HAVE FOUND THE LIGHTHOUSE!")
-                print("YOU WIN!")
-                game_over =  True 
+    while play_again not in ["1", "2"]:
+
+        print("Invalid choice. Please enter 1 or 2.")
+
+        play_again = input(
+            "Would you like to play again? (1 = Yes, 2 = No): "
+        )
+
+    if play_again == "1":
+
+        print("\nStarting a new adventure!")
+
     else:
-        if choice != "3":
-            print("Invalid choice! Please select 1, 2, 3, 4.")
 
-
-
-    
-if choice == "3":
-    print("Thanks for playing Mystery Island")
-
+        print("Thanks for your adventure. Goodbye!")

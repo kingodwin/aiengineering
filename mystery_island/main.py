@@ -75,9 +75,15 @@ while choice != "3" and not game_over:
             energy -= 1
             print(f"Energy: {energy}")
 
+
             if energy <= 0:
                 print("GAME OVER! You run out of energy.")
-                game_over = True   
+                game_over = True  
+
+            elif location == "Lighthouse" and "Lantern" in inventory:
+                print("CONGRATULATIONS! YOU HAVE FOUND THE LIGHTHOUSE!")
+                print("YOU WIN!")
+                game_over =  True 
     else:
         if choice != "3":
             print("Invalid choice! Please select 1, 2, 3, 4.")

@@ -2,12 +2,7 @@
 # MYSTERY ISLAND: THE LOST LIGHTHOUSE
 # =====================================
 
-allowed_routes = {
-    "Beach": "Jungle",
-    "Jungle": "Cave",
-    "Cave": "Old Bridge",
-    "Old Bridge": "Lighthouse"
-}
+from game_logic import get_next_location, can_enter_location
 
 play_again = "1"
 
@@ -86,7 +81,7 @@ while play_again == "1":
 
                 destination = input("Where would you like to go? ")
 
-                next_location = allowed_routes.get(location)
+                next_location = get_next_location(location)
 
                 # CHECK CORRECT ROUTE
                 if destination != next_location:
@@ -97,14 +92,13 @@ while play_again == "1":
                     )
 
                 # CHECK ROPE REQUIREMENT
-                elif destination == "Old Bridge" and "Rope" not in inventory:
+                elif not can_enter_location(destination, inventory):
 
-                    print("You need a Rope to cross the bridge!")
+                    if destination == "Old Bridge":
+                        print("You need a Rope to cross the bridge!")
 
-                # CHECK LANTERN REQUIREMENT
-                elif destination == "Lighthouse" and "Lantern" not in inventory:
-
-                    print("You need a Lantern to enter the Lighthouse!")
+                    elif destination == "Lighthouse":
+                        print("You need a Lantern to enter the Lighthouse!") 
 
                 # SUCCESSFUL TRAVEL
                 else:
